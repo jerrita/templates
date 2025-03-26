@@ -5,14 +5,12 @@ BenchTarget = ./test/proj_tb.v
 OS := $(shell uname -s)
 ifeq ($(OS),Darwin)
     ICELINK_DIR = /Volumes/iCELink
-else ifeq ($(OS),Windows)
+else ifeq ($(OS),Windows_NT)
     ICELINK_DIR = E:
 else
     $(error Please specify ICELINK_DIR: $(OS))
 endif
 $(warning iCELink path: $(ICELINK_DIR))
-
-
 
 ## Internal Veriable
 bench_out = ./build/bench.vvp
@@ -22,7 +20,7 @@ all: bench
 
 .PHONY: spinal bench build
 spinal:
-	mill ${ProjectName}.runMain ${ProjectName}.GenVerilog
+	sbt "runMain myproj.GenVerilog"
 
 bench:
 	@echo "WARN: Maybe you need make spinal first."
@@ -31,7 +29,7 @@ bench:
 	# vvp -n $(bench_out)
 	@echo "WIP"
 
-build: spinal
+build:
 	@mkdir -p build
 	@yosys -p "hierarchy -top ${TopLevel}; synth_ice40 -json build/sys.json" ./build/spinal/*.v
 	@nextpnr-ice40 \

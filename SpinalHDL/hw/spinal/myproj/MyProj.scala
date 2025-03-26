@@ -1,8 +1,7 @@
-package MyProj
+package myproj
 
 import spinal.lib._
 import spinal.core._
-import MyProject.Config
 
 case class SnailClkConfig(
     WIDTH: Int = 20
@@ -29,8 +28,8 @@ case class LedTop(conf: SnailClkConfig) extends Component {
     val cnt    = Reg(UInt(8 bits)) init 0
     val snail  = SnailClk(conf)
 
-    when (snail.tick.rise & en) {
-        cnt := cnt + 1
+    when(snail.tick.rise & en) {
+      cnt := cnt + 1
     }
 
     io.led   := ~cnt.asBits
